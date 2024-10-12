@@ -1,0 +1,67 @@
+###############################
+# Git Line Endings            #
+###############################
+
+# Default normalize line endings to LF on checkin and
+# prevent conversion to CRLF when the file is checked out.
+*                 text=auto eol=lf
+
+# Exceptions to default EOL handling
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.ps1             text eol=crlf
+
+# Diff Helpers
+*.htm             text diff=html
+*.html            text diff=html
+*.md              text diff=markdown
+*.php             text diff=php
+*.py              text diff=python
+*.rb              text diff=ruby
+*.scss            text diff=css
+*.xhtml           text diff=html
+
+# Disable diff
+*.lock            text -diff
+*.map             text -diff
+package-lock.json text -diff
+
+###############################
+# LFS support (optional)      #
+###############################
+# If using, best to do it at beginning
+# of a project before any LFS files added.
+
+# Macro for files that should use Git LFS.
+[attr]lfs -text filter=lfs diff=lfs merge=lfs
+
+
+###############################
+# LFS
+###############################
+
+# NOTE: Removed Git-LFS support because is not supported 
+#       by AWS amplify without a custom builder image.
+
+
+###############################
+# Binary
+###############################
+# This _should_ be redundant with the text=auto and
+# is probably no longer needed.
+
+# (binary is a macro for -text -diff)
+*.avif binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.pdf binary
+*.png binary
+*.gz binary
+*.zip binary
+*.webp binary
+*.woff binary

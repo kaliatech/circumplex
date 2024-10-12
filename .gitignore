@@ -1,0 +1,14 @@
+# node
+node_modules/
+
+# dist
+dist/
+
+# working directory
+working/
+
+# jetbrains setting folder
+.idea/
+
+# Mac OS folder attributes
+.DS_Store
