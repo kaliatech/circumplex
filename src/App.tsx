@@ -1,10 +1,7 @@
-import {CircumplexDemo} from "./components/CircumplexDemo";
+import { CircumplexDemo } from './components/CircumplexDemo'
 
 function App() {
-
-  return (
-        <CircumplexDemo />
-  )
+  return <CircumplexDemo />
 }
 
 export default App
