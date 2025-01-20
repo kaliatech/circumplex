@@ -1,9 +1,15 @@
-import { Application, Graphics } from 'pixi.js'
+import { Application, ContainerChild } from 'pixi.js'
 import { drawBackgroundGraphic2 } from './drawBackgroundGraphic2.ts'
+import { drawBackgroundGraphic } from './drawBackgroundGraphic.ts'
+import { drawBackgroundGraphic3 } from './drawBackgroundGraphic3.ts'
+
+import { extensions, ResizePlugin } from 'pixi.js'
+
+extensions.add(ResizePlugin)
 
 export class PixiService {
   #app?: Application
-  #children = new Map<number, Graphics>()
+  #children = new Map<number, ContainerChild>()
 
   isInitialized: boolean = false
 
@@ -12,6 +18,12 @@ export class PixiService {
   async init(pixiCanvas: HTMLCanvasElement, resizeTo?: Window | HTMLElement): Promise<Application> {
     console.log('init')
     this.#app = new Application()
+    //
+    console.log('widthCont', (resizeTo as HTMLElement).clientWidth)
+    // pixiCanvas.height = resizeTo.clientHeight
+    // pixiCanvas.width = resizeTo.clientWidth
+
+    console.log('pixiCanvas.width', pixiCanvas.width)
 
     await this.#app.init({
       canvas: pixiCanvas,
@@ -23,6 +35,12 @@ export class PixiService {
     })
 
     this.#app.renderer.on('resize', (_width, _height) => {
+      console.log('_width', _width)
+      console.log('_height', _height)
+      if (this.#app) {
+        this.#app.canvas.width = _width
+        this.#app.canvas.height = _height
+      }
       this.doDraw()
     })
 
@@ -31,7 +49,6 @@ export class PixiService {
   }
 
   start() {
-    console.log('start')
     this.doDraw()
   }
 
@@ -56,7 +73,7 @@ export class PixiService {
     this.#app = undefined
   }
 
-  addChild(child: Graphics | Graphics[]) {
+  addChild(child: ContainerChild | ContainerChild[]) {
     const childs = Array.isArray(child) ? child : [child]
     childs.forEach((c) => {
       this.#children.set(c.uid, c)
@@ -64,7 +81,7 @@ export class PixiService {
     })
   }
 
-  removeChild(child: Graphics | Graphics[]) {
+  removeChild(child: ContainerChild | ContainerChild[]) {
     const childs = Array.isArray(child) ? child : [child]
     childs.forEach((c) => {
       this.#children.delete(c.uid)
@@ -87,7 +104,10 @@ export class PixiService {
       this.removeChild([...this.#children.values()])
     }
 
+    console.log('doDraw')
+
     //drawBackgroundGraphic(this)
-    drawBackgroundGraphic2(this)
+    //drawBackgroundGraphic2(this)
+    drawBackgroundGraphic3(this)
   }
 }

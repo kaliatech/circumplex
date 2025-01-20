@@ -8,6 +8,8 @@ export function drawBackgroundGraphic(pixiSrvc: PixiService) {
   }
   const { width, height } = canvasSize
   const size = Math.min(canvasSize.width, canvasSize.height)
+  console.log('width', width)
+  console.log('height', height)
 
   //const obj = new Graphics().circle(0, 0, 50).stroke({})
   const c1 = new Graphics()

@@ -41,7 +41,7 @@ export function drawBackgroundGraphic2(pixiSrvc: PixiService) {
   //  gradientFill1.addColorStop(0.511, 'rgba(255, 0, 0, 1)')
   //  gradientFill1.addColorStop(0.7, 'rgba(255, 0, 0, 1)')
 
-  gradientFill1.addColorStop(0.511, 'rgba(0, 255, 0, 0.1)')
+  gradientFill1.addColorStop(0.52, 'rgba(0, 255, 0, 0.1)')
   gradientFill1.addColorStop(0.7, 'rgba(0, 0, 255, 0.2)')
 
   gradientFill1.addColorStop(1.0, 'rgba(255, 255, 255, 1)')

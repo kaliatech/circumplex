@@ -25,18 +25,23 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
       console.error('Invalid container ID for pixi')
       return
     }
+
+    console.log('contEl.clientWidth', contEl.clientWidth)
     const pixiSrvc = new PixiService()
     pixiServiceRef.current = pixiSrvc
 
+    console.log('pixiCanvasRef.current.width', pixiCanvasRef.current.width)
     if (pixiServiceRef.current.isInitialized) {
       pixiServiceRef.current.start()
     } else {
       pixiSrvc.init(pixiCanvasRef.current, contEl).then(() => {
+        console.log('pixiCanvasRef.current.widthC', pixiCanvasRef.current.width)
         if (pixiServiceRef.current && pixiServiceRef.current == pixiSrvc) {
           pixiSrvc.start()
         }
       })
     }
+    console.log('pixiCanvasRef.current.widthB', pixiCanvasRef.current.width)
     return () => {
       if (pixiServiceRef.current) {
         pixiServiceRef.current.clear()
@@ -49,8 +54,26 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
   }, [pixiCanvasRef])
 
   return (
-    <div id={id} style={{ display: 'flex', flexDirection: 'column', border: '1px solid black' }}>
-      <canvas ref={pixiCanvasRef} style={{ flex: 1, backgroundColor: 'transparent' }} />
+    <div
+      id={id}
+      style={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+        border: '1px solid black',
+      }}
+    >
+      <canvas
+        ref={pixiCanvasRef}
+        style={{
+          backgroundColor: 'transparent',
+          minHeight: 0,
+          minWidth: 0,
+          // height: '100%',
+          // width: '100%',
+        }}
+      />
     </div>
   )
 }
