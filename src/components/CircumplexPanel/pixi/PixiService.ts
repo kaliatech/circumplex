@@ -2,6 +2,7 @@ import { Application, ContainerChild } from 'pixi.js'
 import { drawBackgroundGraphic2 } from './drawBackgroundGraphic2.ts'
 import { drawBackgroundGraphic } from './drawBackgroundGraphic.ts'
 import { drawBackgroundGraphic3 } from './drawBackgroundGraphic3.ts'
+import { drawBackgroundGraphic4 } from './drawBackgroundGraphic4.ts'
 
 import { extensions, ResizePlugin } from 'pixi.js'
 
@@ -106,8 +107,9 @@ export class PixiService {
 
     console.log('doDraw')
 
-    //drawBackgroundGraphic(this)
-    //drawBackgroundGraphic2(this)
-    drawBackgroundGraphic3(this)
+    drawBackgroundGraphic(this)
+    drawBackgroundGraphic2(this)
+    //drawBackgroundGraphic3(this)
+    drawBackgroundGraphic4(this)
   }
 }
