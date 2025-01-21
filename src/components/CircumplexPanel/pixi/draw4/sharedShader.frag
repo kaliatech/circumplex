@@ -15,6 +15,8 @@ out vec4 fragColor;
 
 void main() {
     vec4 texColor = texture(uTexture, vUV);
-    fragColor = vec4(texColor.rgb, 0.5);
+    fragColor = vec4(texColor.rgb, 0.2);
+    // https://stackoverflow.com/questions/39341564/webgl-how-to-correctly-blend-alpha-channel-png
+    fragColor.rgb *= fragColor.a;
     //gl_FragColor = vec4(0.5,0.5,0,1);
 }
