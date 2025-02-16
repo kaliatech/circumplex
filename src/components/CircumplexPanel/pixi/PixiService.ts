@@ -1,5 +1,6 @@
 import { Application, ContainerChild, extensions, ResizePlugin } from 'pixi.js'
 import { drawBackgroundGraphic5 } from './drawBackgroundGraphic5.ts'
+import { drawGraphic5Overlay } from './drawGraphic5Overlay.ts'
 
 extensions.add(ResizePlugin)
 
@@ -107,5 +108,6 @@ export class PixiService {
     //drawBackgroundGraphic3(this)
     //drawBackgroundGraphic4(this)
     drawBackgroundGraphic5(this)
+    drawGraphic5Overlay(this)
   }
 }

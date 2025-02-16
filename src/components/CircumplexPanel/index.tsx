@@ -31,11 +31,11 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
     pixiServiceRef.current = pixiSrvc
 
     console.log('pixiCanvasRef.current.width', pixiCanvasRef.current.width)
-    if (pixiServiceRef.current.isInitialized) {
+    if (pixiServiceRef.current?.isInitialized) {
       pixiServiceRef.current.start()
     } else {
       pixiSrvc.init(pixiCanvasRef.current, contEl).then(() => {
-        console.log('pixiCanvasRef.current.widthC', pixiCanvasRef.current.width)
+        console.log('pixiCanvasRef.current.widthC', pixiCanvasRef.current?.width)
         if (pixiServiceRef.current && pixiServiceRef.current == pixiSrvc) {
           pixiSrvc.start()
         }
@@ -53,15 +53,21 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
     }
   }, [pixiCanvasRef])
 
+  const handleClick = (evt: React.MouseEvent, label: string) => {
+    console.log('click', label, evt)
+  }
+
   return (
     <div
       id={id}
       style={{
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-        border: '1px solid black',
+        minWidth: 0,
+        minHeight: 0,
+        position: 'relative',
+        width: 'auto',
+        aspectRatio: 1,
+        alignItems: 'center',
+        zIndex: 100,
       }}
     >
       <canvas
@@ -70,10 +76,97 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
           backgroundColor: 'transparent',
           minHeight: 0,
           minWidth: 0,
-          // height: '100%',
-          // width: '100%',
         }}
       />
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          padding: '.75rem',
+          cursor: 'pointer',
+        }}
+        onClick={(evt) => handleClick(evt, 'neutral')}
+      >
+        Neutral
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '108%',
+          top: '50%',
+          transform: 'translate(-50%, -50%) rotate(-90deg)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+        }}
+        onClick={(evt) => handleClick(evt, 'valance+')}
+      >
+        Valence (+1)
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '-5%',
+          top: '50%',
+          transform: 'translate(-50%, -50%) rotate(-90deg)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+        }}
+        onClick={(evt) => handleClick(evt, 'valance-')}
+      >
+        Valence (-)
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '82%',
+          top: '62%',
+          transform: 'translate(-50%, -50%)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+        }}
+        onClick={(evt) => handleClick(evt, 'relaxed')}
+      >
+        Content
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '75%',
+          top: '75%',
+          transform: 'translate(-50%, -50%)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+        }}
+        onClick={(evt) => handleClick(evt, 'relaxed')}
+      >
+        Relaxed
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '60%',
+          top: '85%',
+          transform: 'translate(-50%, -50%)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+        }}
+        onClick={(evt) => handleClick(evt, 'relaxed')}
+      >
+        Calm
+      </div>
     </div>
   )
 }

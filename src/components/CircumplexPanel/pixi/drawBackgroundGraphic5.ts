@@ -63,6 +63,8 @@ export function drawBackgroundGraphic5(pixiSrvc: PixiService) {
   // quad.scale.set(canvasSize.width / 4, canvasSize.height / 4)
   quad.position.set(0, 0)
   quad.scale.set(canvasSize.width, canvasSize.height)
+  // quad.position.set(125, 125)
+  // quad.scale.set(canvasSize.width - 125, canvasSize.height - 125)
 
   pixiSrvc.addChild([quad])
 

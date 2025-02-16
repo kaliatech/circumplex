@@ -18,7 +18,7 @@ void main() {
   vec2 fragCoord = gl_FragCoord.xy;
 
   // Map coordinates so that the center of the viewport is (0,0)
-  vec2 uv = (fragCoord - 0.5 * iResolution.xy) / min(iResolution.x, iResolution.y);
+  vec2 uv = (fragCoord - 0.5 * iResolution.xy) / min(iResolution.x-20.0, iResolution.y-20.0);
 
   // Compute the radial distance from the center.
   float r = length(uv);
