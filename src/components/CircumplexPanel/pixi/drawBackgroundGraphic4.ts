@@ -1,4 +1,4 @@
-import { Assets, Geometry, GlProgram, Mesh, Shader, Texture } from 'pixi.js'
+import { Assets, Geometry, GlProgram, Mesh, Shader, Texture, UniformGroup } from 'pixi.js'
 import { PixiService } from './PixiService.ts'
 
 import vertex from './draw4/sharedShader.vert?raw'
@@ -32,7 +32,8 @@ export function drawBackgroundGraphic4(pixiSrvc: PixiService) {
     },
     indexBuffer: [0, 1, 2, 0, 2, 3],
   })
-  Assets.load('https://pixijs.com/assets/bg_rotate.jpg')
+  //Assets.load('https://pixijs.com/assets/bg_rotate.jpg')
+  Assets.load(bg_rotate_url)
     .then((asset) => {
       // const shader = Shader.from({
       //   gl: {
@@ -50,12 +51,28 @@ export function drawBackgroundGraphic4(pixiSrvc: PixiService) {
 
       const texture = Texture.from(asset.source)
 
+      const iResolution = new Float32Array([canvasSize.width, canvasSize.height, 1.0])
+      const uniformGroup = new UniformGroup({
+        iResolution: {
+          type: 'vec3<f32>',
+          value: iResolution,
+        },
+      })
+
+      console.log('iResolution', iResolution)
+
+      //https://pixijs.com/8.x/guides/migrations/v8
+      //https://pixijs.com/8.x/examples/mesh-and-shaders/shader-toy-mesh
+
       const shader = new Shader({
         glProgram: glProgram,
         //gpuProgram: gpuProgram,
         resources: {
           uTexture: texture.source,
           uSampler: texture,
+          //uResolution: iResolution,
+          uniformGroup: uniformGroup,
+          //iTime: 0,
           //uColor: [1, 0, 0, 1],
         },
       })
@@ -67,6 +84,8 @@ export function drawBackgroundGraphic4(pixiSrvc: PixiService) {
 
       quad.position.set(canvasSize.width / 2, canvasSize.height / 2)
       quad.scale.set(canvasSize.width / 4, canvasSize.height / 4)
+      quad.position.set(0, 0)
+      quad.scale.set(canvasSize.width, canvasSize.height)
 
       pixiSrvc.addChild([quad])
     })
