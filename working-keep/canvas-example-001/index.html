@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quadrant Color Ring (Canvas 2D with sRGB Gamma Correction)</title>
+  <style>
+    body {
+      margin: 0;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+  // Utility: clamp value between a and b.
+  function clamp(x, a, b) {
+    return Math.max(a, Math.min(x, b));
+  }
+
+  // Smoothstep: smoothly interpolate from 0 to 1 as x goes from edge0 to edge1.
+  function smoothstep(edge0, edge1, x) {
+    let t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  // Linear interpolation between two colors (each an array of 3 components).
+  function mix(a, b, t) {
+    return [
+      a[0] * (1 - t) + b[0] * t,
+      a[1] * (1 - t) + b[1] * t,
+      a[2] * (1 - t) + b[2] * t,
+    ];
+  }
+
+  // Convert a linear color value to sRGB by applying gamma correction.
+  function toSRGB(c) {
+    return Math.pow(c, 1 / 2.2);
+  }
+
+  // Set up the canvas.
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width;
+  const height = canvas.height;
+  const minDim = Math.min(width, height);
+
+  // Create an image buffer.
+  const imageData = ctx.createImageData(width, height);
+  const data = imageData.data;
+
+  // Define quadrant colors in linear space:
+  // NW: Yellow, NE: Green, SE: Blue, SW: Red.
+  const colorNW = [1.0, 1.0, 0.0]; // Yellow (NW)
+  const colorNE = [0.0, 1.0, 0.0]; // Green (NE)
+  const colorSE = [0.0, 0.0, 1.0]; // Blue (SE)
+  const colorSW = [1.0, 0.0, 0.0]; // Red (SW)
+
+  // Parameters for angular blending.
+  const blendStart = 0.3;
+  const blendEnd = 0.7;
+
+  // Radial alpha ramp parameters.
+  const innerFadeStart = 0.1;
+  const innerFadeEnd = 0.8;
+  const outerFadeStart = 0.475;
+  const outerFadeEnd = 0.5;
+
+  // Loop over every pixel.
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width; i++) {
+      const idx = (j * width + i) * 4;
+
+      // Map pixel coordinates to normalized coordinates (uv) with center (0,0).
+      // Invert y so that positive y points upward (north).
+      const u = (i - width / 2) / minDim;
+      const v = (height / 2 - j) / minDim;
+      const r = Math.hypot(u, v);
+
+      // Compute the angle in degrees.
+      // We use Math.atan2(u, v) so that 0° corresponds to north.
+      let angle = Math.atan2(u, v) * (180 / Math.PI);
+      if (angle < 0) angle += 360;
+
+      let t = 0,
+        t2 = 0;
+      let ringColor = [0, 0, 0];
+
+      // Determine the color based solely on the angle.
+      // Quadrant anchors (in degrees):
+      //   North: blend from NW (yellow at 315°) to NE (green at 45°)
+      //   East:  blend from NE (green at 45°) to SE (blue at 135°)
+      //   South: blend from SE (blue at 135°) to SW (red at 225°)
+      //   West:  blend from SW (red at 225°) to NW (yellow at 315°)
+      if (angle >= 45 && angle < 135) {
+        // East: from NE (green at 45°) to SE (blue at 135°)
+        t = (angle - 45) / 90;
+        t2 = smoothstep(blendStart, blendEnd, t);
+        ringColor = mix(colorNE, colorSE, t2);
+      } else if (angle >= 135 && angle < 225) {
+        // South: from SE (blue at 135°) to SW (red at 225°)
+        t = (angle - 135) / 90;
+        t2 = smoothstep(blendStart, blendEnd, t);
+        ringColor = mix(colorSE, colorSW, t2);
+      } else if (angle >= 225 && angle < 315) {
+        // West: from SW (red at 225°) to NW (yellow at 315°)
+        t = (angle - 225) / 90;
+        t2 = smoothstep(blendStart, blendEnd, t);
+        ringColor = mix(colorSW, colorNW, t2);
+      } else {
+        // North: from NW (yellow at 315°) to NE (green at 45°)
+        if (angle >= 315) {
+          t = (angle - 315) / 90;
+        } else {
+          t = (angle + 45) / 90;
+        }
+        t2 = smoothstep(blendStart, blendEnd, t);
+        ringColor = mix(colorNW, colorNE, t2);
+      }
+
+      // Compute the radial alpha ramp.
+      const alphaInner = smoothstep(innerFadeStart, innerFadeEnd, r);
+      const alphaOuter = 1 - smoothstep(outerFadeStart, outerFadeEnd, r);
+      let alpha = alphaInner * alphaOuter;
+
+      // Premultiply the color by alpha.
+      let linearR = ringColor[0] * alpha;
+      let linearG = ringColor[1] * alpha;
+      let linearB = ringColor[2] * alpha;
+
+      // Apply sRGB gamma correction.
+      let finalR = toSRGB(linearR);
+      let finalG = toSRGB(linearG);
+      let finalB = toSRGB(linearB);
+
+      // Write to the ImageData buffer (convert from [0,1] to [0,255]).
+      data[idx] = Math.round(finalR * 255);
+      data[idx + 1] = Math.round(finalG * 255);
+      data[idx + 2] = Math.round(finalB * 255);
+      data[idx + 3] = Math.round(alpha * 255);
+    }
+  }
+
+  // Draw the image onto the canvas.
+  ctx.putImageData(imageData, 0, 0);
+</script>
+</body>
+</html>
