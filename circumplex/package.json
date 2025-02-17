@@ -1,0 +1,28 @@
+{
+  "name": "@kaliatech/circumplex",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "format": "prettier --write . --ignore-path ../.prettierignore --cache-location ../node_modules/.cache/circumplex/prettier",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "pixi.js": "^8.8.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "*",
+    "eslint": "*",
+    "eslint-plugin-react-hooks": "*",
+    "eslint-plugin-react-refresh": "*",
+    "globals": "*",
+    "prettier": "*",
+    "prettier-plugin-jsdoc": "*",
+    "typescript": "*",
+    "typescript-eslint": "*",
+    "vite": "*"
+  }
+}

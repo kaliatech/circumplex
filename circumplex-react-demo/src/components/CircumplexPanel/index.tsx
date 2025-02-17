@@ -51,7 +51,7 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
       //   pixiServiceRef.current = undefined
       // }
     }
-  }, [pixiCanvasRef])
+  }, [id, pixiCanvasRef])
 
   const handleClick = (evt: React.MouseEvent, label: string) => {
     console.log('click', label, evt)
