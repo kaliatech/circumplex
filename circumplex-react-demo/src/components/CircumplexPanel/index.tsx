@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { PixiService } from './pixi/PixiService.ts'
 
+import { Circumplex } from '@kaliatech/circumplex/Circumplex.js'
+const circumplex = new Circumplex()
+
 interface CircumplexPanelProps {
   id?: string
 }
@@ -11,6 +14,7 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
   const pixiServiceRef = useRef<PixiService>()
 
   useEffect(() => {
+    circumplex.sayHello()
     if (!pixiCanvasRef.current) {
       return
     }

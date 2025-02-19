@@ -6,7 +6,9 @@
   "scripts": {
     "build": "npm run build -ws",
     "lint": "npm run lint -ws",
-    "format": "npm run format -ws"
+    "format": "npm run format -ws",
+    "test": "npm run test -ws",
+    "dev": "npm run dev -w circumplex-react-demo"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
