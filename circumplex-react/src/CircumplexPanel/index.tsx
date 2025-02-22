@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { PixiService } from './pixi/PixiService.ts'
 
-import { Circumplex } from '@kaliatech/circumplex/Circumplex.js'
+import { Circumplex } from '@kaliatech/circumplex/src/Circumplex.ts'
 const circumplex = new Circumplex()
 
 interface CircumplexPanelProps {
@@ -38,7 +38,7 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
     if (pixiServiceRef.current?.isInitialized) {
       pixiServiceRef.current.start()
     } else {
-      pixiSrvc.init(pixiCanvasRef.current, contEl).then(() => {
+      void pixiSrvc.init(pixiCanvasRef.current, contEl).then(() => {
         console.log('pixiCanvasRef.current.widthC', pixiCanvasRef.current?.width)
         if (pixiServiceRef.current && pixiServiceRef.current == pixiSrvc) {
           pixiSrvc.start()

@@ -4,7 +4,7 @@ import { PixiService } from './PixiService.ts'
 import vertex from './draw4/sharedShader.vert?raw'
 import fragment from './draw4/sharedShader.frag?raw'
 
-import bg_rotate_url from '../../../assets/bg_rotate.jpg'
+import bg_rotate_url from '../../assets/bg_rotate.jpg'
 
 export function drawBackgroundGraphic4(pixiSrvc: PixiService) {
   const canvasSize = pixiSrvc.getSize()
@@ -49,6 +49,7 @@ export function drawBackgroundGraphic4(pixiSrvc: PixiService) {
         fragment: fragment,
       })
 
+      //eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const texture = Texture.from(asset.source)
 
       const iResolution = new Float32Array([canvasSize.width, canvasSize.height, 1.0])

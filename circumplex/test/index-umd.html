@@ -7,9 +7,12 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/lib/main.tsx"></script>
+    <script type="module" src="../dist/circumplex.umd.js"></script>
     <script type="module">
       console.log('HERE')
+
+      const cp = new window.Circumplex.Circumplex()
+      cp.sayHello()
     </script>
   </body>
 </html>

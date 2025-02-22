@@ -1,4 +1,4 @@
-import { Assets, Geometry, Mesh, Shader } from 'pixi.js'
+import { Assets, Geometry, Mesh, Shader, Texture } from 'pixi.js'
 import { PixiService } from './PixiService.ts'
 
 import vertex from './draw3/sharedShader.vert?raw'
@@ -65,7 +65,7 @@ export function drawBackgroundGraphic3(pixiSrvc: PixiService) {
           fragment,
         },
         resources: {
-          uTexture: texture,
+          uTexture: texture as Texture,
         },
       })
 

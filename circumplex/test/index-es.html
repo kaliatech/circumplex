@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circumplex</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="../dist/circumplex.es.js"></script>
+    <script type="module">
+      import { Circumplex } from '../dist/circumplex.es.js'
+      console.log('HERE')
+
+      const cp = new Circumplex()
+      cp.sayHello()
+    </script>
+  </body>
+</html>

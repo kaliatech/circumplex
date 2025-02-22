@@ -8,8 +8,9 @@ export class PixiService {
   #app?: Application
   #children = new Map<number, ContainerChild>()
 
-  isInitialized: boolean = false
+  isInitialized = false
 
+  //eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
   async init(pixiCanvas: HTMLCanvasElement, resizeTo?: Window | HTMLElement): Promise<Application> {
@@ -25,7 +26,7 @@ export class PixiService {
     await this.#app.init({
       canvas: pixiCanvas,
       backgroundAlpha: 0,
-      resizeTo: resizeTo || window,
+      resizeTo: resizeTo ?? window,
       antialias: true,
       //resolution: window.devicePixelRatio,
       autoDensity: true,

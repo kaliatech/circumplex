@@ -1,4 +1,4 @@
-import { CircumplexPanel } from '../CircumplexPanel'
+import { CircumplexPanel } from '@kaliatech/circumplex-react/src/CircumplexPanel/index.tsx'
 
 export const CircumplexDemo = () => {
   return (

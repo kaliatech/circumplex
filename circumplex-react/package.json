@@ -1,0 +1,24 @@
+{
+  "name": "@kaliatech/circumplex-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "./src/*": "./src/*",
+    "./*": "./dist/*"
+  },
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "format": "prettier --write . --ignore-path ../.prettierignore --cache-location ../node_modules/.cache/circumplex-react/prettier",
+    "test": "vitest ."
+  },
+  "dependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "@kaliatech/circumplex": "*"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.37.4"
+  }
+}
