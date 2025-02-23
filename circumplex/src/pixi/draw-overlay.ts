@@ -1,7 +1,7 @@
 import { Graphics } from 'pixi.js'
 import { PixiService } from './PixiService.ts'
 
-export function drawGraphic5Overlay(pixiSrvc: PixiService) {
+export function drawOverlay(pixiSrvc: PixiService) {
   const canvasSize = pixiSrvc.getSize()
   if (!canvasSize) {
     return

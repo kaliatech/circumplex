@@ -1,18 +1,14 @@
 import { Geometry, GlProgram, Mesh, Shader, UniformGroup } from 'pixi.js'
 import { PixiService } from './PixiService.ts'
 
-import vertex from './draw5/sharedShader.vert?raw'
-import fragment from './draw5/sharedShader.frag?raw'
+import vertex from './shaders/cplex-background.vert?raw'
+import fragment from './shaders/cplex-background.frag?raw'
 
-export function drawBackgroundGraphic5(pixiSrvc: PixiService) {
+export function drawBackground(pixiSrvc: PixiService) {
   const canvasSize = pixiSrvc.getSize()
   if (!canvasSize) {
     return
   }
-  // const { width, height } = canvasSize
-  // const size = Math.min(canvasSize.width, canvasSize.height)
-
-  console.log('drawBackgroundGraphic5')
 
   const quadGeometry = new Geometry({
     attributes: {

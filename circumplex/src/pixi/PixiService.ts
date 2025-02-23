@@ -1,6 +1,6 @@
 import { Application, ContainerChild, extensions, ResizePlugin } from 'pixi.js'
-import { drawBackgroundGraphic5 } from './drawBackgroundGraphic5.ts'
-import { drawGraphic5Overlay } from './drawGraphic5Overlay.ts'
+import { drawBackground } from './draw-background.ts'
+import { drawOverlay } from './draw-overlay.ts'
 
 extensions.add(ResizePlugin)
 
@@ -14,14 +14,7 @@ export class PixiService {
   constructor() {}
 
   async init(pixiCanvas: HTMLCanvasElement, resizeTo?: Window | HTMLElement): Promise<Application> {
-    console.log('init')
     this.#app = new Application()
-    //
-    console.log('widthCont', (resizeTo as HTMLElement).clientWidth)
-    // pixiCanvas.height = resizeTo.clientHeight
-    // pixiCanvas.width = resizeTo.clientWidth
-
-    console.log('pixiCanvas.width', pixiCanvas.width)
 
     await this.#app.init({
       canvas: pixiCanvas,
@@ -33,8 +26,6 @@ export class PixiService {
     })
 
     this.#app.renderer.on('resize', (_width, _height) => {
-      console.log('_width', _width)
-      console.log('_height', _height)
       if (this.#app) {
         this.#app.canvas.width = _width
         this.#app.canvas.height = _height
@@ -51,14 +42,12 @@ export class PixiService {
   }
 
   clear() {
-    console.log('clear')
     if (this.#children) {
       this.removeChild([...this.#children.values()])
     }
   }
 
-  _destroy() {
-    console.log('destroy')
+  destroy() {
     if (!this.#app) return
     if (!this.#app.renderer) return // possible sequence bug in pixi.jss
 
@@ -101,14 +90,7 @@ export class PixiService {
     if (this.#children) {
       this.removeChild([...this.#children.values()])
     }
-
-    console.log('doDraw')
-
-    //drawBackgroundGraphic(this)
-    //drawBackgroundGraphic2(this)
-    //drawBackgroundGraphic3(this)
-    //drawBackgroundGraphic4(this)
-    drawBackgroundGraphic5(this)
-    drawGraphic5Overlay(this)
+    drawBackground(this)
+    drawOverlay(this)
   }
 }

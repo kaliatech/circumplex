@@ -6,13 +6,14 @@
     <title>Circumplex</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="circumplex-cont"></div>
     <script type="module" src="../dist/circumplex.es.js"></script>
     <script type="module">
       import { Circumplex } from '../dist/circumplex.es.js'
-      console.log('HERE')
-
-      const cp = new Circumplex()
+      const cpConfig = {
+        containerId: 'circumplex-cont',
+      }
+      const cp = new Circumplex(cpConfig)
       cp.sayHello()
     </script>
   </body>

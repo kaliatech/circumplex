@@ -1,64 +1,23 @@
-import { useEffect, useRef } from 'react'
-import { PixiService } from './pixi/PixiService.ts'
+import { useEffect } from 'react'
 
 import { Circumplex } from '@kaliatech/circumplex/src/Circumplex.ts'
-const circumplex = new Circumplex({
-  canvasWidth: 500,
-  canvasHeight: 500,
-})
 
 interface CircumplexPanelProps {
   id?: string
 }
 
 export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps) => {
-  const pixiCanvasRef = useRef<HTMLCanvasElement>(null)
-
-  const pixiServiceRef = useRef<PixiService>()
-
   useEffect(() => {
+    const circumplex = new Circumplex({
+      containerId: id,
+    })
+
     circumplex.sayHello()
-    if (!pixiCanvasRef.current) {
-      return
-    }
 
-    // if (pixiServiceRef.current) {
-    //   pixiServiceRef.current.destroy()
-    //   pixiServiceRef.current = undefined
-    // }
-
-    const contEl = document.getElementById(id)
-    if (!contEl) {
-      console.error('Invalid container ID for pixi')
-      return
-    }
-
-    console.log('contEl.clientWidth', contEl.clientWidth)
-    const pixiSrvc = new PixiService()
-    pixiServiceRef.current = pixiSrvc
-
-    console.log('pixiCanvasRef.current.width', pixiCanvasRef.current.width)
-    if (pixiServiceRef.current?.isInitialized) {
-      pixiServiceRef.current.start()
-    } else {
-      void pixiSrvc.init(pixiCanvasRef.current, contEl).then(() => {
-        console.log('pixiCanvasRef.current.widthC', pixiCanvasRef.current?.width)
-        if (pixiServiceRef.current && pixiServiceRef.current == pixiSrvc) {
-          pixiSrvc.start()
-        }
-      })
-    }
-    console.log('pixiCanvasRef.current.widthB', pixiCanvasRef.current.width)
     return () => {
-      if (pixiServiceRef.current) {
-        pixiServiceRef.current.clear()
-      }
-      // if (pixiServiceRef.current) {
-      //   pixiServiceRef.current.destroy()
-      //   pixiServiceRef.current = undefined
-      // }
+      circumplex.destroy()
     }
-  }, [id, pixiCanvasRef])
+  }, [id])
 
   const handleClick = (evt: React.MouseEvent, label: string) => {
     console.log('click', label, evt)
@@ -77,15 +36,6 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
         zIndex: 100,
       }}
     >
-      <canvas
-        ref={pixiCanvasRef}
-        style={{
-          backgroundColor: 'transparent',
-          minHeight: 0,
-          minWidth: 0,
-        }}
-      />
-
       <div
         style={{
           position: 'absolute',
