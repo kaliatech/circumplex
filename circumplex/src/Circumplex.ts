@@ -1,11 +1,17 @@
-export class Circumplex {
-  name: string
+import { CircumplexConfig } from './CircumplexConfig.ts'
 
-  constructor() {
-    this.name = 'Circumplex'
+export class Circumplex {
+  constructor(private config: CircumplexConfig) {}
+
+  get getConfig(): CircumplexConfig {
+    return structuredClone(this.config)
+  }
+
+  updateConfig(newConfig: Partial<CircumplexConfig>) {
+    this.config = { ...this.config, ...newConfig }
   }
 
   sayHello() {
-    console.log(`Hello from ${this.name}`)
+    console.log('Config:', this.config)
   }
 }

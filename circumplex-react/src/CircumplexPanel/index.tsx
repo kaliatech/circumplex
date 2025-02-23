@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react'
 import { PixiService } from './pixi/PixiService.ts'
 
 import { Circumplex } from '@kaliatech/circumplex/src/Circumplex.ts'
-const circumplex = new Circumplex()
+const circumplex = new Circumplex({
+  canvasWidth: 500,
+  canvasHeight: 500,
+})
 
 interface CircumplexPanelProps {
   id?: string
