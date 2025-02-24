@@ -3,8 +3,9 @@ import { PixiService } from './PixiService.ts'
 
 import vertex from './shaders/cplex-background.vert?raw'
 import fragment from './shaders/cplex-background.frag?raw'
+import { CircumplexConfig } from '../CircumplexConfig.ts'
 
-export function drawBackground(pixiSrvc: PixiService) {
+export function drawBackground(pixiSrvc: PixiService, config: CircumplexConfig) {
   const canvasSize = pixiSrvc.getSize()
   if (!canvasSize) {
     return
@@ -38,7 +39,13 @@ export function drawBackground(pixiSrvc: PixiService) {
       type: 'vec3<f32>',
       value: iResolution,
     },
+    colorNW: {
+      type: 'vec3<f32>',
+      value: config.nw?.color?.coords ?? [1, 1, 1],
+    },
   })
+
+  console.log('config.nw?.color?.coords', config.nw?.color?.coords)
 
   //https://pixijs.com/8.x/guides/migrations/v8
   //https://pixijs.com/8.x/examples/mesh-and-shaders/shader-toy-mesh

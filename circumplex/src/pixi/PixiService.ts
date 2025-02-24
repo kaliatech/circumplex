@@ -1,10 +1,12 @@
 import { Application, ContainerChild, extensions, ResizePlugin } from 'pixi.js'
 import { drawBackground } from './draw-background.ts'
 import { drawOverlay } from './draw-overlay.ts'
+import { CircumplexConfig } from '../CircumplexConfig.ts'
 
 extensions.add(ResizePlugin)
 
 export class PixiService {
+  #config?: CircumplexConfig
   #app?: Application
   #children = new Map<number, ContainerChild>()
 
@@ -30,14 +32,15 @@ export class PixiService {
         this.#app.canvas.width = _width
         this.#app.canvas.height = _height
       }
-      this.doDraw()
+      //this.doDraw()
     })
 
     this.isInitialized = true
     return this.#app
   }
 
-  start() {
+  start(config: CircumplexConfig) {
+    this.#config = config
     this.doDraw()
   }
 
@@ -87,10 +90,12 @@ export class PixiService {
     const app = this.#app
     if (!app) return
 
+    if (!this.#config) return
+
     if (this.#children) {
       this.removeChild([...this.#children.values()])
     }
-    drawBackground(this)
+    drawBackground(this, this.#config)
     drawOverlay(this)
   }
 }

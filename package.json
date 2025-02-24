@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "clean": "rimraf dist node_modules .cache",
+    "clean": "rimraf --glob **/dist **/.cache",
     "build": "npm run build -ws",
     "lint": "npm run lint -ws",
     "format": "npm run format -ws",
@@ -15,7 +15,7 @@
     "@eslint/js": "^9.19.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.19.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -25,7 +25,7 @@
     "rimraf": "^6.0.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.0",
-    "vite": "^6.1.0",
+    "vite": "^6.1.1",
     "vitest": "^3.0.6"
   },
   "workspaces": [

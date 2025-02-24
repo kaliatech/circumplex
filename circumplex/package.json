@@ -18,6 +18,7 @@
     "test": "vitest ."
   },
   "dependencies": {
+    "colorjs.io": "^0.5.2",
     "pixi.js": "^8.8.0"
   },
   "devDependencies": {

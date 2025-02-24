@@ -25,7 +25,7 @@ export class Circumplex {
     this.#contEl.appendChild(this.#pixiCanvas)
 
     void this.#pixiSrvc.init(this.#pixiCanvas, this.#contEl).then(() => {
-      this.#pixiSrvc.start()
+      this.#pixiSrvc.start(this.#config)
     })
   }
 

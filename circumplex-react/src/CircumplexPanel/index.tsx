@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 
 import { Circumplex } from '@kaliatech/circumplex/src/Circumplex.ts'
 
+import Color from 'colorjs.io'
+
 interface CircumplexPanelProps {
   id?: string
 }
@@ -10,6 +12,9 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
   useEffect(() => {
     const circumplex = new Circumplex({
       containerId: id,
+      nw: {
+        color: new Color('rgb(55,0,0)'),
+      },
     })
 
     circumplex.sayHello()

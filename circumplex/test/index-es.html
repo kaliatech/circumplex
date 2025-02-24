@@ -10,8 +10,12 @@
     <script type="module" src="../dist/circumplex.es.js"></script>
     <script type="module">
       import { Circumplex } from '../dist/circumplex.es.js'
+      import { Color } from '../dist/circumplex.es.js'
       const cpConfig = {
         containerId: 'circumplex-cont',
+        nw: {
+          color: new Color('rgb(0,100,100)'),
+        }
       }
       const cp = new Circumplex(cpConfig)
       cp.sayHello()
