@@ -13,7 +13,7 @@ export const CircumplexPanel = ({ id = 'circumplex-cont' }: CircumplexPanelProps
     const circumplex = new Circumplex({
       containerId: id,
       nw: {
-        color: new Color('rgb(55,0,0)'),
+        color: new Color('rgb(255,0,0)'),
       },
     })
 

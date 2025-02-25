@@ -1,5 +1,24 @@
+import Color from 'colorjs.io'
 import { CircumplexConfig } from './CircumplexConfig.ts'
 import { PixiService } from './pixi/PixiService.ts'
+
+const defaults: Partial<CircumplexConfig> = {
+  nw: {
+    color: new Color('rgb(255, 0, 0)'),
+  },
+  ne: {
+    color: new Color('rgb(0, 255, 0)'),
+  },
+  se: {
+    color: new Color('blue'),
+  },
+  drawArrows: true,
+  drawLines: true,
+  gridWidth: 10,
+  linesColor: new Color('rgb(166, 166, 166)'),
+  backgroundColor: new Color('rgb(91, 91, 91)'),
+}
+
 export class Circumplex {
   #config: CircumplexConfig
   #contEl: HTMLElement | null = null
@@ -7,7 +26,7 @@ export class Circumplex {
   #pixiCanvas: HTMLCanvasElement = document.createElement('canvas')
 
   constructor(config: CircumplexConfig) {
-    this.#config = config
+    this.#config = { ...defaults, ...config }
     this.init()
   }
 

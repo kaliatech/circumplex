@@ -8,6 +8,9 @@ precision mediump float;
 
 uniform vec3 iResolution;
 uniform vec3 colorNW;
+uniform vec3 colorNE;
+uniform vec3 colorSE;
+uniform vec3 colorSW;
 
 out vec4 fragColor;
 
@@ -28,12 +31,6 @@ void main() {
   // (By swapping the arguments to atan, we get 0° when uv points upward.)
   float angle = degrees(atan(uv.x, uv.y));
   if (angle < 0.0) angle += 360.0;
-
-  // Define quadrant colors.
-  //vec3 colorNW = vec3(1.0, 1.0, 0.0); // Yellow (NW)
-  vec3 colorNE = vec3(0.0, 1.0, 0.0); // Green (NE)
-  vec3 colorSE = vec3(0.0, 0.0, 1.0); // Blue (SE)
-  vec3 colorSW = vec3(1.0, 0.0, 0.0); // Red (SW)
 
   // We'll use these parameters to restrict the blending to a narrow range.
   float blendStart = 0.25;

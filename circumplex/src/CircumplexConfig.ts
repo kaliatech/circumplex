@@ -5,6 +5,13 @@ export interface CircumplexConfig {
   width?: string
   height?: string
   backgroundColor?: Color
+  drawGrid?: boolean
+  gridColor?: Color
+  gridWidth?: number
+  drawLines?: boolean
+  linesColor?: Color
+  linesWidth?: number
+  drawArrows?: boolean
   ne?: {
     color?: Color
   }

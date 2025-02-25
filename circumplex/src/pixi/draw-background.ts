@@ -41,14 +41,21 @@ export function drawBackground(pixiSrvc: PixiService, config: CircumplexConfig) 
     },
     colorNW: {
       type: 'vec3<f32>',
-      value: config.nw?.color?.coords ?? [1, 1, 1],
+      value: config.nw?.color?.coords ?? [1, 0, 0], // Default yellow
+    },
+    colorNE: {
+      type: 'vec3<f32>',
+      value: config.ne?.color?.coords ?? [0, 1, 0], // Default green
+    },
+    colorSE: {
+      type: 'vec3<f32>',
+      value: config.se?.color?.coords ?? [0, 0, 1], // Default blue
+    },
+    colorSW: {
+      type: 'vec3<f32>',
+      value: config.sw?.color?.coords ?? [1, 0, 0], // Default red
     },
   })
-
-  console.log('config.nw?.color?.coords', config.nw?.color?.coords)
-
-  //https://pixijs.com/8.x/guides/migrations/v8
-  //https://pixijs.com/8.x/examples/mesh-and-shaders/shader-toy-mesh
 
   const shader = new Shader({
     glProgram: glProgram,
@@ -62,12 +69,8 @@ export function drawBackground(pixiSrvc: PixiService, config: CircumplexConfig) 
     shader,
   })
 
-  // quad.position.set(canvasSize.width / 2, canvasSize.height / 2)
-  // quad.scale.set(canvasSize.width / 4, canvasSize.height / 4)
   quad.position.set(0, 0)
   quad.scale.set(canvasSize.width, canvasSize.height)
-  // quad.position.set(125, 125)
-  // quad.scale.set(canvasSize.width - 125, canvasSize.height - 125)
 
   pixiSrvc.addChild([quad])
 

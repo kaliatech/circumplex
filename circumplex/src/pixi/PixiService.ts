@@ -96,6 +96,6 @@ export class PixiService {
       this.removeChild([...this.#children.values()])
     }
     drawBackground(this, this.#config)
-    drawOverlay(this)
+    drawOverlay(this, this.#config)
   }
 }
