@@ -1,23 +1,6 @@
-import Color from 'colorjs.io'
 import { CircumplexConfig } from './CircumplexConfig.ts'
 import { PixiService } from './pixi/PixiService.ts'
-
-const defaults: Partial<CircumplexConfig> = {
-  nw: {
-    color: new Color('rgb(255, 0, 0)'),
-  },
-  ne: {
-    color: new Color('rgb(0, 255, 0)'),
-  },
-  se: {
-    color: new Color('blue'),
-  },
-  drawArrows: true,
-  drawLines: true,
-  gridWidth: 10,
-  linesColor: new Color('rgb(166, 166, 166)'),
-  backgroundColor: new Color('rgb(91, 91, 91)'),
-}
+import { defaultConfig } from './CircumplexConfigDefaults.ts'
 
 export class Circumplex {
   #config: CircumplexConfig
@@ -25,8 +8,8 @@ export class Circumplex {
   #pixiSrvc: PixiService = new PixiService()
   #pixiCanvas: HTMLCanvasElement = document.createElement('canvas')
 
-  constructor(config: CircumplexConfig) {
-    this.#config = { ...defaults, ...config }
+  constructor(config: Partial<CircumplexConfig>) {
+    this.#config = { ...defaultConfig, ...config } as CircumplexConfig
     this.init()
   }
 
@@ -36,16 +19,55 @@ export class Circumplex {
       throw new Error(`Invalid container ID: ${this.#config.containerId}.`)
     }
 
+    const bgEl = this.initBackground()
+
     Object.assign(this.#pixiCanvas.style, {
       backgroundColor: 'transparent',
       minWidth: '0',
       minHeight: '0',
     })
-    this.#contEl.appendChild(this.#pixiCanvas)
 
-    void this.#pixiSrvc.init(this.#pixiCanvas, this.#contEl).then(() => {
+    const canvasDiv = document.createElement('div')
+    canvasDiv.style.width = '100%'
+    canvasDiv.style.height = '100%'
+    bgEl.appendChild(canvasDiv)
+
+    canvasDiv.appendChild(this.#pixiCanvas)
+
+    void this.#pixiSrvc.init(this.#pixiCanvas, canvasDiv).then(() => {
       this.#pixiSrvc.start(this.#config)
     })
+  }
+
+  initBackground(): HTMLDivElement {
+    //    <div
+    //   style={{
+    //     position: 'relative',
+    //     height: '20rem',
+    //     width: '20rem',
+    //     margin: '2rem',
+    //     border: '1px solid gray',
+    //     //backgroundColor: 'black',
+    //     backgroundSize: '10px 10px',
+    //     backgroundImage:
+    //       'linear-gradient(to right, rgba(100,100,100,0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(100,100,100,0.15) 1px, transparent 1px)',
+    //   }}
+    // >
+
+    const bgEl = document.createElement('div')
+    bgEl.className = 'circumplex-background'
+    bgEl.style.position = 'relative'
+    bgEl.style.width = '20rem'
+    bgEl.style.height = '20rem'
+    bgEl.style.border = '1px solid gray'
+    bgEl.style.backgroundColor = this.#config.backgroundColor.toString()
+    if (this.#config.drawGrid) {
+      bgEl.style.backgroundSize = '10px 10px'
+      bgEl.style.backgroundImage =
+        'linear-gradient(to right, rgba(100,100,100,0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(100,100,100,0.15) 1px, transparent 1px)'
+    }
+    this.#contEl?.appendChild(bgEl)
+    return bgEl
   }
 
   get config(): CircumplexConfig {
@@ -59,6 +81,9 @@ export class Circumplex {
   destroy(): void {
     this.#pixiSrvc.destroy()
     this.#pixiCanvas.remove()
+    if (this.#contEl) {
+      this.#contEl.innerHTML = ''
+    }
     this.#contEl = null
   }
 
