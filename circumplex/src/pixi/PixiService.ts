@@ -44,6 +44,7 @@ export class PixiService {
     this.doDraw()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   stop() {}
 
   clear() {

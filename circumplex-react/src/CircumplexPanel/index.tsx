@@ -14,8 +14,8 @@ export const CircumplexPanel = ({ id = 'circumplex-cont', config }: CircumplexPa
   const circumplexRef = useRef<Circumplex | null>(null)
   useEffect(() => {
     if (circumplexRef.current) {
-      console.log('destroying circumplex')
-      circumplexRef.current.destroy()
+      return
+      //circumplexRef.current.destroy()
     }
     const circumplex = new Circumplex({
       ...config,
@@ -27,8 +27,9 @@ export const CircumplexPanel = ({ id = 'circumplex-cont', config }: CircumplexPa
 
     return () => {
       circumplex.destroy()
+      circumplexRef.current = null
     }
-  }, [id])
+  }, [id, config])
 
   useEffect(() => {
     circumplexRef.current?.updateConfig(config)
