@@ -5,6 +5,7 @@ import { defaultConfig } from './CircumplexConfigDefaults.ts'
 export class Circumplex {
   #config: CircumplexConfig
   #contEl: HTMLElement | null = null
+  #bgEl: HTMLDivElement | null = null
   #pixiSrvc: PixiService = new PixiService()
   #pixiCanvas: HTMLCanvasElement = document.createElement('canvas')
 
@@ -19,7 +20,7 @@ export class Circumplex {
       throw new Error(`Invalid container ID: ${this.#config.containerId}.`)
     }
 
-    const bgEl = this.initBackground()
+    this.#bgEl = this.initBackground()
 
     Object.assign(this.#pixiCanvas.style, {
       backgroundColor: 'transparent',
@@ -30,7 +31,7 @@ export class Circumplex {
     const canvasDiv = document.createElement('div')
     canvasDiv.style.width = '100%'
     canvasDiv.style.height = '100%'
-    bgEl.appendChild(canvasDiv)
+    this.#bgEl.appendChild(canvasDiv)
 
     canvasDiv.appendChild(this.#pixiCanvas)
 
@@ -40,31 +41,25 @@ export class Circumplex {
   }
 
   initBackground(): HTMLDivElement {
-    //    <div
-    //   style={{
-    //     position: 'relative',
-    //     height: '20rem',
-    //     width: '20rem',
-    //     margin: '2rem',
-    //     border: '1px solid gray',
-    //     //backgroundColor: 'black',
-    //     backgroundSize: '10px 10px',
-    //     backgroundImage:
-    //       'linear-gradient(to right, rgba(100,100,100,0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(100,100,100,0.15) 1px, transparent 1px)',
-    //   }}
-    // >
-
-    const bgEl = document.createElement('div')
-    bgEl.className = 'circumplex-background'
-    bgEl.style.position = 'relative'
-    bgEl.style.width = '20rem'
-    bgEl.style.height = '20rem'
+    if (!this.#bgEl) {
+      const bgEl = document.createElement('div')
+      bgEl.className = 'circumplex-background'
+      bgEl.style.position = 'relative'
+      bgEl.style.width = '100%'
+      bgEl.style.height = '100%'
+      this.#contEl?.appendChild(bgEl)
+      this.#bgEl = bgEl
+    }
+    const bgEl = this.#bgEl
     bgEl.style.border = '1px solid gray'
+
     bgEl.style.backgroundColor = this.#config.backgroundColor.toString()
     if (this.#config.drawGrid) {
       bgEl.style.backgroundSize = '10px 10px'
       bgEl.style.backgroundImage =
         'linear-gradient(to right, rgba(100,100,100,0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(100,100,100,0.15) 1px, transparent 1px)'
+    } else {
+      bgEl.style.backgroundImage = 'none'
     }
     this.#contEl?.appendChild(bgEl)
     return bgEl
@@ -76,6 +71,14 @@ export class Circumplex {
 
   updateConfig(newConfig: Partial<CircumplexConfig>): void {
     this.#config = { ...this.#config, ...newConfig }
+    // if (this.#pixiSrvc) {
+    //   this.#pixiSrvc.stop()
+    //   this.#pixiSrvc.clear()
+    // }
+    // if (this.#pixiCanvas) {
+    //   this.#pixiCanvas.remove()
+    // }
+    this.initBackground()
   }
 
   destroy(): void {

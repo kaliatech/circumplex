@@ -3,30 +3,38 @@ import { CircumplexPanel } from '@kaliatech/circumplex-react/src/CircumplexPanel
 import '@mantine/core/styles.css'
 
 import { createTheme, MantineProvider } from '@mantine/core'
+import { CircumplexSettings } from '../CircumplexSettings'
+import { useState } from 'react'
+import { defaultConfig } from '@kaliatech/circumplex/src/CircumplexConfigDefaults.ts'
+import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
 
 const theme = createTheme({})
 
 export const CircumplexDemo = () => {
+  const [config, setConfig] = useState({ ...defaultConfig, containerId: 'circumplex-cont' })
+
+  const handleConfigChange = (newConfig: CircumplexConfig) => {
+    setConfig({ ...config, ...newConfig })
+  }
   return (
     <MantineProvider theme={theme} defaultColorScheme={'light'}>
-      <div style={{ display: 'flex', flexDirection: 'column', margin: '1rem' }}>
+      <main>
         <h1>Circumplex UI Control</h1>
-        {/*<div*/}
-        {/*  style={{*/}
-        {/*    position: 'relative',*/}
-        {/*    height: '20rem',*/}
-        {/*    width: '20rem',*/}
-        {/*    margin: '2rem',*/}
-        {/*    border: '1px solid gray',*/}
-        {/*    //backgroundColor: 'black',*/}
-        {/*    backgroundSize: '10px 10px',*/}
-        {/*    backgroundImage:*/}
-        {/*      'linear-gradient(to right, rgba(100,100,100,0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(100,100,100,0.15) 1px, transparent 1px)',*/}
-        {/*  }}*/}
-        {/*>*/}
-        <CircumplexPanel />
-        {/*</div>*/}
-      </div>
+        <p>
+          This is a demo of the Circumplex UI control. More information, see:{' '}
+          <a href="https://github.com/kaliatech/circumplex">
+            https://github.com/kaliatech/circumplex
+          </a>
+        </p>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', maxWidth: '30rem' }}>
+            <CircumplexPanel config={config} />
+          </div>
+          <div>
+            <CircumplexSettings config={config} onChange={handleConfigChange} />
+          </div>
+        </div>
+      </main>
     </MantineProvider>
   )
 }

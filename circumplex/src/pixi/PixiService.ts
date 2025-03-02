@@ -44,6 +44,8 @@ export class PixiService {
     this.doDraw()
   }
 
+  stop() {}
+
   clear() {
     if (this.#children) {
       this.removeChild([...this.#children.values()])
