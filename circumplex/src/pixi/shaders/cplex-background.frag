@@ -73,7 +73,7 @@ void main() {
   // - The inner fade (center) makes the dial start as transparent (alpha 0)
   // - The outer fade makes it disappear again at the rim.
   float innerFadeStart = 0.1;
-  float innerFadeEnd   = 0.8;
+  float innerFadeEnd   = 0.75;
   float outerFadeStart = 0.475;
   float outerFadeEnd   = 0.5;
 

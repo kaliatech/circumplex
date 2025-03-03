@@ -1,4 +1,5 @@
-import { Checkbox } from '@mantine/core'
+import Color from 'colorjs.io'
+import { Checkbox, ColorPicker } from '@mantine/core'
 import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
 
 interface CircumplexSettingsProps {
@@ -6,20 +7,33 @@ interface CircumplexSettingsProps {
   onChange: (newConfig: CircumplexConfig) => void
 }
 
-export const CircumplexSettings = (props: CircumplexSettingsProps) => {
+export const CircumplexSettings = ({ config, onChange }: CircumplexSettingsProps) => {
   const handleChange = (newProps: Partial<CircumplexConfig>) => {
-    props.onChange({ ...props.config, ...newProps })
+    onChange({ ...config, ...newProps })
   }
 
+  const handleColorChange = (area: string, newColor: string) => {
+    const newProps = { ...config }
+    if (area === 'nw') {
+      newProps.nw.color = new Color(newColor)
+    }
+    onChange({ ...config, ...newProps })
+  }
   return (
     <div>
       <h2>Settings</h2>
       <Checkbox
         label={'Draw grid'}
-        checked={props.config.drawGrid}
+        checked={config.drawGrid}
         onChange={(evt) =>
           handleChange(evt.currentTarget.checked ? { drawGrid: true } : { drawGrid: false })
         }
+      />
+
+      <ColorPicker
+        value={config.nw.color.toString()}
+        format={'rgba'}
+        onChange={(evt) => handleColorChange('nw', evt)}
       />
     </div>
   )

@@ -17,7 +17,6 @@ export class PixiService {
 
   async init(pixiCanvas: HTMLCanvasElement, resizeTo?: Window | HTMLElement): Promise<Application> {
     this.#app = new Application()
-
     await this.#app.init({
       canvas: pixiCanvas,
       backgroundAlpha: 0,
@@ -27,13 +26,13 @@ export class PixiService {
       autoDensity: true,
     })
 
-    this.#app.renderer.on('resize', (_width, _height) => {
-      if (this.#app) {
-        this.#app.canvas.width = _width
-        this.#app.canvas.height = _height
-      }
-      //this.doDraw()
-    })
+    // this.#app.renderer.on('resize', (_width, _height) => {
+    //   if (this.#app && this.#app.canvas) {
+    //     this.#app.canvas.width = _width
+    //     this.#app.canvas.height = _height
+    //   }
+    //   //this.doDraw()
+    // })
 
     this.isInitialized = true
     return this.#app
@@ -59,11 +58,19 @@ export class PixiService {
 
     this.removeChild([...this.#children.values()])
 
+    this.#app.renderer.removeAllListeners()
+
     //TODO: Unable to destroy without getting WebGL error on subsequent init
     //https://github.com/pixijs/pixijs/issues/10403
-    //this.#app?.destroy({ removeView: false }, { children: true, texture: false, context: false })
+    //this.#app.renderer.destroy()
+    try {
+      this.#app.destroy({ removeView: true }, { children: true, texture: true, context: true })
+    } catch (err) {
+      console.error('Error destroying pixi app', err)
+    }
 
     this.#app = undefined
+    this.isInitialized = false
   }
 
   addChild(child: ContainerChild | ContainerChild[]) {

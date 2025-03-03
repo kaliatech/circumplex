@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Circumplex } from '@kaliatech/circumplex/src/Circumplex.ts'
 import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
@@ -6,34 +6,33 @@ import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
 //import Color from 'colorjs.io'
 
 interface CircumplexPanelProps {
-  id?: string
   config: CircumplexConfig
 }
 
-export const CircumplexPanel = ({ id = 'circumplex-cont', config }: CircumplexPanelProps) => {
-  const circumplexRef = useRef<Circumplex | null>(null)
-  useEffect(() => {
-    if (circumplexRef.current) {
-      return
-      //circumplexRef.current.destroy()
-    }
-    const circumplex = new Circumplex({
-      ...config,
-      ...{
-        containerId: id,
-      },
-    })
-    circumplexRef.current = circumplex
+export const CircumplexPanel = ({ config }: CircumplexPanelProps) => {
+  const circumplexRef = useRef<Circumplex>(new Circumplex(config, true))
+  const [isCircumplexInited, setIsCircumplexInited] = useState(false)
 
+  useEffect(() => {
+    const cRef = circumplexRef.current
+    cRef
+      ?.init()
+      .then(() => {
+        setIsCircumplexInited(true)
+      })
+      .catch((err) => {
+        console.error('Unable init Circumples', err)
+      })
     return () => {
-      circumplex.destroy()
-      circumplexRef.current = null
+      cRef?.destroy()
+      setIsCircumplexInited(false)
     }
-  }, [id, config])
+  }, [])
 
   useEffect(() => {
+    if (!isCircumplexInited) return
     circumplexRef.current?.updateConfig(config)
-  }, [config])
+  }, [isCircumplexInited, config])
 
   const handleClick = (evt: React.MouseEvent, label: string) => {
     console.log('click', label, evt)
@@ -41,7 +40,7 @@ export const CircumplexPanel = ({ id = 'circumplex-cont', config }: CircumplexPa
 
   return (
     <div
-      id={id}
+      id={config.containerId}
       style={{
         minWidth: 0,
         minHeight: 0,
@@ -64,53 +63,55 @@ export const CircumplexPanel = ({ id = 'circumplex-cont', config }: CircumplexPa
         }}
         onClick={(evt) => handleClick(evt, 'neutral')}
       >
-        Neutral
+        Neutrals
       </div>
 
-      {/*  <div*/}
-      {/*    style={{*/}
-      {/*      position: 'absolute',*/}
-      {/*      left: '108%',*/}
-      {/*      top: '50%',*/}
-      {/*      transform: 'translate(-50%, -50%) rotate(-90deg)',*/}
-      {/*      padding: '.75rem',*/}
-      {/*      cursor: 'pointer',*/}
-      {/*      textAlign: 'center',*/}
-      {/*    }}*/}
-      {/*    onClick={(evt) => handleClick(evt, 'valance+')}*/}
-      {/*  >*/}
-      {/*    Valence (+1)*/}
-      {/*  </div>*/}
+      {/*<div*/}
+      {/*  style={{*/}
+      {/*    position: 'absolute',*/}
+      {/*    left: '108%',*/}
+      {/*    top: '50%',*/}
+      {/*    transform: 'translate(-50%, -50%) rotate(-90deg)',*/}
+      {/*    padding: '.75rem',*/}
+      {/*    cursor: 'pointer',*/}
+      {/*    textAlign: 'center',*/}
+      {/*    zIndex: 200,*/}
+      {/*  }}*/}
+      {/*  onClick={(evt) => handleClick(evt, 'valance+')}*/}
+      {/*>*/}
+      {/*  Valence (+1)*/}
+      {/*</div>*/}
 
-      {/*  <div*/}
-      {/*    style={{*/}
-      {/*      position: 'absolute',*/}
-      {/*      left: '-5%',*/}
-      {/*      top: '50%',*/}
-      {/*      transform: 'translate(-50%, -50%) rotate(-90deg)',*/}
-      {/*      padding: '.75rem',*/}
-      {/*      cursor: 'pointer',*/}
-      {/*      textAlign: 'center',*/}
-      {/*    }}*/}
-      {/*    onClick={(evt) => handleClick(evt, 'valance-')}*/}
-      {/*  >*/}
-      {/*    Valence (-)*/}
-      {/*  </div>*/}
+      {/*<div*/}
+      {/*  style={{*/}
+      {/*    position: 'absolute',*/}
+      {/*    left: '-5%',*/}
+      {/*    top: '50%',*/}
+      {/*    transform: 'translate(-50%, -50%) rotate(-90deg)',*/}
+      {/*    padding: '.75rem',*/}
+      {/*    cursor: 'pointer',*/}
+      {/*    textAlign: 'center',*/}
+      {/*  }}*/}
+      {/*  onClick={(evt) => handleClick(evt, 'valance-')}*/}
+      {/*>*/}
+      {/*  Valence (-)*/}
+      {/*</div>*/}
 
-      {/*  <div*/}
-      {/*    style={{*/}
-      {/*      position: 'absolute',*/}
-      {/*      left: '82%',*/}
-      {/*      top: '62%',*/}
-      {/*      transform: 'translate(-50%, -50%)',*/}
-      {/*      padding: '.75rem',*/}
-      {/*      cursor: 'pointer',*/}
-      {/*      textAlign: 'center',*/}
-      {/*    }}*/}
-      {/*    onClick={(evt) => handleClick(evt, 'relaxed')}*/}
-      {/*  >*/}
-      {/*    Content*/}
-      {/*  </div>*/}
+      <div
+        style={{
+          position: 'absolute',
+          left: '82%',
+          top: '62%',
+          transform: 'translate(-50%, -50%)',
+          padding: '.75rem',
+          cursor: 'pointer',
+          textAlign: 'center',
+          zIndex: 200,
+        }}
+        onClick={(evt) => handleClick(evt, 'relaxed')}
+      >
+        Content
+      </div>
 
       {/*  <div*/}
       {/*    style={{*/}

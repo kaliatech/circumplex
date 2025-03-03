@@ -6,22 +6,26 @@ export class Circumplex {
   #config: CircumplexConfig
   #contEl: HTMLElement | null = null
   #bgEl: HTMLDivElement | null = null
-  #pixiSrvc: PixiService = new PixiService()
-  #pixiCanvas: HTMLCanvasElement = document.createElement('canvas')
+  #pixiSrvc: PixiService | null = null
+  #pixiCanvas: HTMLCanvasElement | null = null
 
-  constructor(config: Partial<CircumplexConfig>) {
+  constructor(config: Partial<CircumplexConfig>, delayInit = false) {
     this.#config = { ...defaultConfig, ...config } as CircumplexConfig
-    this.init()
+    if (!delayInit) {
+      void this.init(config)
+    }
   }
 
-  private init(): void {
+  async init(config?: Partial<CircumplexConfig>): Promise<void> {
+    this.#config = { ...this.#config, ...config } as CircumplexConfig
     this.#contEl = document.getElementById(this.#config.containerId)
     if (!this.#contEl) {
       throw new Error(`Invalid container ID: ${this.#config.containerId}.`)
     }
 
-    this.#bgEl = this.initBackground()
+    this.#bgEl = this.redrawBackground()
 
+    this.#pixiCanvas = document.createElement('canvas')
     Object.assign(this.#pixiCanvas.style, {
       backgroundColor: 'transparent',
       minWidth: '0',
@@ -35,12 +39,12 @@ export class Circumplex {
 
     canvasDiv.appendChild(this.#pixiCanvas)
 
-    void this.#pixiSrvc.init(this.#pixiCanvas, canvasDiv).then(() => {
-      this.#pixiSrvc.start(this.#config)
-    })
+    this.#pixiSrvc = new PixiService()
+    await this.#pixiSrvc.init(this.#pixiCanvas, canvasDiv)
+    this.#pixiSrvc?.start(this.#config)
   }
 
-  initBackground(): HTMLDivElement {
+  redrawBackground() {
     if (!this.#bgEl) {
       const bgEl = document.createElement('div')
       bgEl.className = 'circumplex-background'
@@ -70,20 +74,22 @@ export class Circumplex {
   }
 
   updateConfig(newConfig: Partial<CircumplexConfig>): void {
+    if (!this.#pixiSrvc?.isInitialized) {
+      return
+    }
     this.#config = { ...this.#config, ...newConfig }
-    // if (this.#pixiSrvc) {
-    //   this.#pixiSrvc.stop()
-    //   this.#pixiSrvc.clear()
-    // }
-    // if (this.#pixiCanvas) {
-    //   this.#pixiCanvas.remove()
-    // }
-    this.initBackground()
+    this.redrawBackground()
+    this.#pixiSrvc?.start(this.#config)
   }
 
   destroy(): void {
-    this.#pixiSrvc.destroy()
-    this.#pixiCanvas.remove()
+    console.log('destroy')
+    this.#pixiSrvc?.destroy()
+    this.#pixiSrvc = null
+    this.#pixiCanvas?.remove()
+    this.#pixiCanvas = null
+    this.#bgEl?.remove()
+    this.#bgEl = null
     if (this.#contEl) {
       this.#contEl.innerHTML = ''
     }
@@ -91,6 +97,6 @@ export class Circumplex {
   }
 
   sayHello(): void {
-    console.log('Hello from Circumplex!')
+    console.log('Hello from Circumplexs!')
   }
 }
