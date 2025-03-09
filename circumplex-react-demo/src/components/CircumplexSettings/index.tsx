@@ -1,6 +1,6 @@
-import Color from 'colorjs.io'
-import { Checkbox, ColorPicker } from '@mantine/core'
+import { Checkbox } from '@mantine/core'
 import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
+import { QuadrantSettingsPanel } from './QuadrantSettingsPanel'
 
 interface CircumplexSettingsProps {
   config: CircumplexConfig
@@ -12,16 +12,10 @@ export const CircumplexSettings = ({ config, onChange }: CircumplexSettingsProps
     onChange({ ...config, ...newProps })
   }
 
-  const handleColorChange = (area: string, newColor: string) => {
-    const newProps = { ...config }
-    if (area === 'nw') {
-      newProps.nw.color = new Color(newColor)
-    }
-    onChange({ ...config, ...newProps })
-  }
   return (
     <div>
       <h2>Settings</h2>
+
       <Checkbox
         label={'Draw grid'}
         checked={config.drawGrid}
@@ -29,12 +23,10 @@ export const CircumplexSettings = ({ config, onChange }: CircumplexSettingsProps
           handleChange(evt.currentTarget.checked ? { drawGrid: true } : { drawGrid: false })
         }
       />
-
-      <ColorPicker
-        value={config.nw.color.toString()}
-        format={'rgba'}
-        onChange={(evt) => handleColorChange('nw', evt)}
-      />
+      <QuadrantSettingsPanel quadrantId="nw" config={config} onChange={onChange} />
+      <QuadrantSettingsPanel quadrantId="ne" config={config} onChange={onChange} />
+      <QuadrantSettingsPanel quadrantId="se" config={config} onChange={onChange} />
+      <QuadrantSettingsPanel quadrantId="sw" config={config} onChange={onChange} />
     </div>
   )
 }

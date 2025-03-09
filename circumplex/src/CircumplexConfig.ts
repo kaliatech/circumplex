@@ -1,5 +1,7 @@
 import Color from 'colorjs.io'
 
+export type QuadrantId = 'ne' | 'se' | 'sw' | 'nw'
+
 export interface CircumplexConfig {
   containerId: string
   backgroundColor: Color
