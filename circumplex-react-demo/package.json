@@ -13,29 +13,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kaliatech/circumplex-react": "*",
+    "@kaliatech/circumplex-react": "^0.0.0",
     "@mantine/core": "^7.17.0",
     "@mantine/hooks": "^7.17.0",
-    "@mantine/modals": "^7.17.0",
-    "react": "^18",
-    "react-dom": "^18"
+    "@mantine/modals": "^7.17.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "*",
-    "@types/react": "*",
-    "@types/react-dom": "*",
-    "@vitejs/plugin-react": "*",
-    "eslint": "*",
-    "eslint-plugin-react-hooks": "*",
-    "eslint-plugin-react-refresh": "*",
-    "globals": "*",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
-    "prettier": "*",
-    "prettier-plugin-jsdoc": "*",
-    "typescript": "*",
-    "typescript-eslint": "*",
-    "vite": "*"
+    "prettier": "^3.5.3",
+    "prettier-plugin-jsdoc": "^1.3.2",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0",
+    "vite": "^6.2.1"
   }
 }
