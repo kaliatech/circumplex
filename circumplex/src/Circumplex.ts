@@ -32,6 +32,10 @@ export class Circumplex {
       minHeight: '0',
     })
 
+    // this.#pixiCanvas?.addEventListener('click', (evt) => {
+    //   console.log('click', evt)
+    // })
+
     const canvasDiv = document.createElement('div')
     canvasDiv.style.width = '100%'
     canvasDiv.style.height = '100%'

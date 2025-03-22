@@ -1,4 +1,11 @@
-import { Application, ContainerChild, extensions, ResizePlugin } from 'pixi.js'
+import {
+  Application,
+  ContainerChild,
+  extensions,
+  Graphics,
+  ResizePlugin,
+  Text as PText,
+} from 'pixi.js'
 import { drawBackground } from './draw-background.ts'
 import { drawOverlay } from './draw-overlay.ts'
 import { CircumplexConfig } from '../CircumplexConfig.ts'
@@ -22,7 +29,7 @@ export class PixiService {
       backgroundAlpha: 0,
       resizeTo: resizeTo ?? window,
       antialias: true,
-      //resolution: window.devicePixelRatio,
+      resolution: window.devicePixelRatio || 1,
       autoDensity: true,
     })
 
@@ -33,6 +40,41 @@ export class PixiService {
     //   }
     //   //this.doDraw()
     // })
+
+    this.#app.stage.interactive = true
+    this.#app?.stage.addListener('mouseenter', () => {
+      if (this.#app?.stage) {
+        this.#app.stage.cursor = 'pointer'
+      }
+    })
+    this.#app?.stage.addListener('mouseleave', () => {
+      if (this.#app?.stage) {
+        this.#app.stage.cursor = 'auto'
+      }
+    })
+
+    const marker = new Graphics().circle(0, 0, 20).fill(0xff0000)
+    marker.alpha = 0.25
+    marker.zIndex = 1000
+    this.#app?.stage.addChild(marker)
+
+    const testTxt = new PText({
+      text: 'X',
+      style: {
+        fontSize: 16,
+      },
+    })
+    this.#app?.stage.addChild(testTxt)
+
+    this.#app?.stage.addListener('click', (evt) => {
+      console.log('PixiService.click', evt.x, evt.y)
+      marker.position = { x: evt.globalX, y: evt.globalY }
+      testTxt.position = {
+        x: marker.position.x - marker.width / 4 + testTxt.width / 2,
+        y: marker.position.y - marker.height / 4,
+      }
+      testTxt.zIndex = 1000
+    })
 
     this.isInitialized = true
     return this.#app
@@ -89,11 +131,22 @@ export class PixiService {
     })
   }
 
-  getSize(): { width: number; height: number } | undefined {
+  getStageSize(): { width: number; height: number } | undefined {
+    if (!this.#app || !this.#app.canvas) {
+      return undefined
+    }
+    //return { width: this.#app.canvas.width, height: this.#app.canvas.height }
+    //return { width: this.#app.stage.width, height: this.#app.stage.height }
+    return { width: this.#app.screen.width, height: this.#app.screen.height }
+  }
+
+  getCanvasSize(): { width: number; height: number } | undefined {
     if (!this.#app || !this.#app.canvas) {
       return undefined
     }
     return { width: this.#app.canvas.width, height: this.#app.canvas.height }
+    //Alternatively:
+    // width: this.getStageSize() * window.devicePixelRatio
   }
 
   doDraw() {
