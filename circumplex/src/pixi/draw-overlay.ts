@@ -3,7 +3,7 @@ import { PixiService } from './PixiService'
 import { CircumplexConfig } from '../CircumplexConfig'
 
 export function drawOverlay(pixiSrvc: PixiService, config: CircumplexConfig) {
-  const canvasSize = pixiSrvc.getSize()
+  const canvasSize = pixiSrvc.getStageSize()
   if (!canvasSize) {
     return
   }

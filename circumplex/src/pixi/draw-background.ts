@@ -6,7 +6,12 @@ import fragment from './shaders/cplex-background.frag?raw'
 import { CircumplexConfig } from '../CircumplexConfig.ts'
 
 export function drawBackground(pixiSrvc: PixiService, config: CircumplexConfig) {
-  const canvasSize = pixiSrvc.getSize()
+  const stageSize = pixiSrvc.getStageSize()
+  if (!stageSize) {
+    return
+  }
+
+  const canvasSize = pixiSrvc.getCanvasSize()
   if (!canvasSize) {
     return
   }
@@ -70,7 +75,7 @@ export function drawBackground(pixiSrvc: PixiService, config: CircumplexConfig) 
   })
 
   quad.position.set(0, 0)
-  quad.scale.set(canvasSize.width, canvasSize.height)
+  quad.scale.set(stageSize.width, stageSize.height)
 
   pixiSrvc.addChild([quad])
 
