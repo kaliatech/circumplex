@@ -2,13 +2,22 @@ import { CircumplexPanel } from '@kaliatech/circumplex-react/src/CircumplexPanel
 
 import '@mantine/core/styles.css'
 
-import { createTheme, MantineProvider } from '@mantine/core'
+import { createTheme, MantineProvider, rem } from '@mantine/core'
 import { CircumplexSettings } from '../CircumplexSettings'
 import { useState } from 'react'
 import { defaultConfig } from '@kaliatech/circumplex/src/CircumplexConfigDefaults.ts'
 import { CircumplexConfig } from '@kaliatech/circumplex/src/CircumplexConfig.ts'
 
-const theme = createTheme({})
+const theme = createTheme({
+  fontFamily: 'Inter, sans-serif',
+  fontSizes: {
+    xs: rem(10),
+    sm: rem(12),
+    md: rem(14),
+    lg: rem(16),
+    xl: rem(18),
+  },
+})
 
 export const CircumplexDemo = () => {
   const [config, setConfig] = useState({ ...defaultConfig, containerId: 'circumplex-cont' })

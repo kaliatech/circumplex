@@ -24,7 +24,7 @@ export const ColorSwatchDialog = ({
       opened={opened}
       withCloseButton
       onClose={onClose}
-      size="lg"
+      size="sm"
       radius="md"
     >
       <Group>
